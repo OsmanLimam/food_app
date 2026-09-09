@@ -1,40 +1,63 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Heart, X } from 'lucide-react';
+import { Search, Heart, X, MessageCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { popularFoods, restaurantList } from '../data/foodData';
 import FoodImage from '../components/FoodImage';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
-  const { toggleFavorite, isFavorite, getCartCount, setMenuOpen } = useStore();
+  const { toggleFavorite, isFavorite, getCartCount, setMenuOpen, isLoggedIn, user, cart } = useStore();
   const cartCount = getCartCount();
+
+  // Build WhatsApp message with order details
+  const handleWhatsAppOrder = () => {
+    const phoneNumber = '233551537532'; // 0551537532 in international format
+    let message = `🍛 *New Order from SaviDon's Kitchen*\n\n`;
+
+    if (isLoggedIn && user) {
+      message += `*Customer:* ${user.name}\n`;
+      message += `*Phone:* ${user.phone}\n`;
+      message += `*Email:* ${user.email}\n\n`;
+    }
+
+    if (cart.length > 0) {
+      message += `*Order Items:*\n`;
+      cart.forEach((item) => {
+        message += `• ${item.name} x${item.quantity} — GH₵${(item.price * item.quantity).toFixed(2)}\n`;
+      });
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      message += `\n*Total: GH₵${total.toFixed(2)}*\n`;
+    } else {
+      message += `I'd like to place an order. Please share the menu!\n`;
+    }
+
+    message += `\n_Delivered to KNUST Campus_`;
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <div className="min-h-screen bg-bg pb-28">
-      {/* Header */}
+      {/* Header - Cleaner design */}
       <div className="sticky top-0 z-30 bg-bg/95 backdrop-blur-sm px-5 pt-4 pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center active:bg-elevated transition-colors"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 12h18M3 6h18M3 18h18"/>
-              </svg>
-            </button>
-            <div>
-              <p className="text-[11px] text-primary font-semibold tracking-wide">SaviDon's Kitchen</p>
-              <h1 className="text-sm font-medium text-text-secondary leading-tight flex items-center gap-1">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-                KNUST Campus, Kumasi
-              </h1>
-            </div>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center active:bg-elevated transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+
+          {/* Brand - centered and clean */}
+          <div className="text-center">
+            <h1 className="text-base font-bold text-primary leading-tight">SaviDon's</h1>
+            <p className="text-[10px] text-text-muted leading-tight">KNUST Campus</p>
           </div>
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/search')}
@@ -43,20 +66,12 @@ export default function HomeScreen() {
               <Search size={18} className="text-text-secondary" />
             </button>
             <button
-              onClick={() => navigate('/notifications')}
-              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center relative active:bg-elevated transition-colors"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" strokeWidth="2">
-                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                <path d="M13.73 21a2 2 0 01-3.46 0"/>
-              </svg>
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary" />
-            </button>
-            <button
-              onClick={() => navigate('/profile')}
+              onClick={() => isLoggedIn ? navigate('/profile') : navigate('/login')}
               className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center active:bg-primary/30 transition-colors"
             >
-              <span className="text-sm font-bold text-primary">S</span>
+              <span className="text-sm font-bold text-primary">
+                {isLoggedIn && user ? user.name.charAt(0).toUpperCase() : 'S'}
+              </span>
             </button>
           </div>
         </div>
@@ -80,11 +95,11 @@ export default function HomeScreen() {
           className="relative bg-surface rounded-2xl overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
           onClick={() => navigate('/restaurant')}
         >
-          <div className="w-full h-36 bg-gradient-to-br from-orange-800 to-red-900 flex items-center justify-center relative">
-            <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/5" />
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
-            <span className="text-6xl drop-shadow-lg">🏪</span>
-          </div>
+          <img
+            src={restaurantList[0].image}
+            alt="Featured"
+            className="w-full h-36 object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-bg/90 via-bg/30 to-transparent" />
           <div className="absolute bottom-3 left-4 right-4">
             <div className="flex items-center gap-2 mb-1">
@@ -146,10 +161,11 @@ export default function HomeScreen() {
               className="flex-shrink-0 w-32 cursor-pointer active:scale-[0.97] transition-transform"
               onClick={() => navigate('/restaurant')}
             >
-              <div className={`w-32 h-24 rounded-2xl bg-gradient-to-br ${r.gradient} flex items-center justify-center relative overflow-hidden`}>
-                <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/5" />
-                <span className="text-4xl drop-shadow-lg">{r.emoji}</span>
-              </div>
+              <img
+                src={r.image}
+                alt={r.name}
+                className="w-32 h-24 rounded-2xl object-cover"
+              />
               <h3 className="text-xs font-semibold text-text mt-2 truncate">{r.name}</h3>
               <p className="text-[10px] text-text-secondary">{r.time}</p>
             </div>
@@ -176,7 +192,7 @@ export default function HomeScreen() {
               onClick={() => navigate(`/food/${food.id}`)}
             >
               <div className="relative">
-                <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} />
+                <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} image={food.image} />
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -249,18 +265,32 @@ export default function HomeScreen() {
                 <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                 <path d="M13.73 21a2 2 0 01-3.46 0"/>
               </svg>
-              <span className="text-[10px] font-medium text-text-muted">Notifications</span>
+              <span className="text-[10px] font-medium text-text-muted">Alerts</span>
             </button>
-            <button className="flex flex-col items-center gap-1" onClick={() => navigate('/profile')}>
+            <button
+              className="flex flex-col items-center gap-1"
+              onClick={() => isLoggedIn ? navigate('/profile') : navigate('/login')}
+            >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
-              <span className="text-[10px] font-medium text-text-muted">Profile</span>
+              <span className="text-[10px] font-medium text-text-muted">
+                {isLoggedIn ? 'Profile' : 'Login'}
+              </span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* WhatsApp Floating Button */}
+      <button
+        onClick={handleWhatsAppOrder}
+        className="fixed bottom-28 right-4 z-40 w-14 h-14 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-95 transition-transform"
+        title="Order via WhatsApp"
+      >
+        <MessageCircle size={24} className="text-white fill-white" />
+      </button>
 
       {/* Menu Drawer */}
       <MenuDrawer />
@@ -270,9 +300,15 @@ export default function HomeScreen() {
 
 function MenuDrawer() {
   const navigate = useNavigate();
-  const { menuOpen, setMenuOpen } = useStore();
+  const { menuOpen, setMenuOpen, isLoggedIn, user, logout } = useStore();
 
   if (!menuOpen) return null;
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    navigate('/');
+  };
 
   return (
     <>
@@ -283,7 +319,7 @@ function MenuDrawer() {
       <div className="fixed top-0 left-0 bottom-0 w-72 bg-surface z-50 animate-slide-right p-5 overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-primary font-bold text-lg">SaviDon's Kitchen</p>
+            <p className="text-primary font-bold text-lg">SaviDon's</p>
             <p className="text-xs text-text-secondary">KNUST Campus, Kumasi</p>
           </div>
           <button
@@ -293,6 +329,29 @@ function MenuDrawer() {
             <X size={18} className="text-text" />
           </button>
         </div>
+
+        {/* User Info */}
+        {isLoggedIn && user ? (
+          <div className="bg-elevated rounded-xl p-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <span className="text-sm font-bold text-primary">{user.name.charAt(0).toUpperCase()}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-text truncate">{user.name}</p>
+                <p className="text-xs text-text-muted truncate">{user.email}</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => { navigate('/login'); setMenuOpen(false); }}
+            className="w-full bg-primary rounded-xl p-4 mb-4 text-center"
+          >
+            <p className="text-sm font-semibold text-white">Sign In / Sign Up</p>
+            <p className="text-xs text-white/70 mt-0.5">Tap to access your account</p>
+          </button>
+        )}
 
         <div className="space-y-1">
           {[
@@ -317,12 +376,20 @@ function MenuDrawer() {
           ))}
         </div>
 
+        {/* Logout */}
+        {isLoggedIn && (
+          <button
+            onClick={handleLogout}
+            className="w-full mt-4 flex items-center gap-3 px-3 py-3 rounded-xl text-left text-red-500 hover:bg-elevated active:bg-elevated transition-colors"
+          >
+            <span className="text-lg">🚪</span>
+            <span className="text-sm font-medium">Log Out</span>
+          </button>
+        )}
+
         <div className="mt-6 pt-6 border-t border-divider">
-          <div className="bg-elevated rounded-xl p-4">
-            <p className="text-xs text-text-secondary">Logged in as</p>
-            <p className="text-sm font-semibold text-text mt-1">SaviDon</p>
-            <p className="text-xs text-text-muted mt-0.5">savidon@knust.edu.gh</p>
-          </div>
+          <p className="text-xs text-text-muted text-center">SaviDon's Kitchen v1.0</p>
+          <p className="text-[10px] text-text-muted text-center mt-1">Made with ❤️ for KNUST 🇬🇭</p>
         </div>
       </div>
     </>

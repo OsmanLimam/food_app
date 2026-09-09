@@ -83,10 +83,11 @@ export default function SearchScreen() {
             className="bg-surface rounded-2xl overflow-hidden cursor-pointer active:bg-elevated transition-colors"
             onClick={() => navigate('/restaurant')}
           >
-            <div className="w-full h-24 bg-gradient-to-br from-orange-800 to-red-900 flex items-center justify-center relative">
-              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/5" />
-              <span className="text-4xl drop-shadow-lg">{restaurant.emoji}</span>
-            </div>
+            <img
+              src={restaurant.image}
+              alt={restaurant.name}
+              className="w-full h-24 object-cover"
+            />
             <div className="p-4">
               <h3 className="text-sm font-semibold text-text">{restaurant.name}</h3>
               <p className="text-xs text-text-secondary mt-0.5">{restaurant.address}</p>
@@ -109,7 +110,7 @@ export default function SearchScreen() {
                 style={{ animationDelay: `${index * 50}ms` }}
                 onClick={() => navigate(`/food/${item.id}`)}
               >
-                <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
+                <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} image={item.image} size="sm" />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-semibold text-text truncate">{item.name}</h3>
                   <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">

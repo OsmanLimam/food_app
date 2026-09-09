@@ -39,11 +39,11 @@ export default function RestaurantScreen() {
       {/* Restaurant Card */}
       <div className="px-5">
         <div className="bg-surface rounded-2xl overflow-hidden">
-          <div className="w-full h-40 bg-gradient-to-br from-orange-800 to-red-900 flex items-center justify-center relative">
-            <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/5" />
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
-            <span className="text-6xl drop-shadow-lg">{restaurant.emoji}</span>
-          </div>
+          <img
+            src={restaurant.image}
+            alt={restaurant.name}
+            className="w-full h-40 object-cover"
+          />
           <div className="p-4">
             <h1 className="text-lg font-bold text-text">{restaurant.name}</h1>
             <p className="text-sm text-text-secondary flex items-center gap-1 mt-1">
@@ -97,7 +97,7 @@ export default function RestaurantScreen() {
               style={{ animationDelay: `${index * 50}ms` }}
               onClick={() => navigate(`/food/${item.id}`)}
             >
-              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
+              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} image={item.image} size="sm" />
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-text truncate">{item.name}</h3>
                 <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">{item.description}</p>

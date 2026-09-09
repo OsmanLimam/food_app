@@ -37,7 +37,7 @@ export default function FavoritesScreen() {
                 onClick={() => navigate(`/food/${food.id}`)}
               >
                 <div className="relative">
-                  <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} />
+                  <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} image={food.image} />
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
