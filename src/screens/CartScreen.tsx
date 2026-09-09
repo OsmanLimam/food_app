@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import FoodImage from '../components/FoodImage';
 
 export default function CartScreen() {
   const navigate = useNavigate();
@@ -28,11 +29,11 @@ export default function CartScreen() {
         {/* Empty State */}
         <div className="flex-1 flex flex-col items-center justify-center px-5">
           <div className="w-24 h-24 rounded-full bg-surface flex items-center justify-center mb-5">
-            <ShoppingBag size={40} className="text-text-muted" />
+            <span className="text-4xl">🛒</span>
           </div>
           <h2 className="text-xl font-bold text-text">Your cart is empty</h2>
           <p className="text-sm text-text-secondary mt-2 text-center">
-            Looks like you haven't added anything to your cart yet
+            Looks like you haven't added any Ghanaian dishes yet
           </p>
           <button
             onClick={() => navigate('/')}
@@ -68,18 +69,14 @@ export default function CartScreen() {
             className="animate-fade-in bg-surface rounded-2xl p-3 flex items-center gap-3"
             style={{ animationDelay: `${index * 50}ms` }}
           >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
-            />
+            <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-text truncate">{item.name}</h3>
               <p className="text-xs text-text-secondary mt-0.5">
                 {item.subtitle || 'Standard'}
               </p>
               <span className="text-primary font-bold text-sm mt-1 block">
-                ${item.price.toFixed(2)}
+                GH₵{item.price.toFixed(2)}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -106,7 +103,7 @@ export default function CartScreen() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <span className="text-xs text-text-secondary">{count} Selected Food</span>
-            <p className="text-xl font-bold text-text mt-0.5">${total.toFixed(2)}</p>
+            <p className="text-xl font-bold text-text mt-0.5">GH₵{total.toFixed(2)}</p>
           </div>
         </div>
         <button

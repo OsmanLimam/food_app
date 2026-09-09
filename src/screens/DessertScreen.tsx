@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, SlidersHorizontal, Star } from 'lucide-react';
 import { dessertItems } from '../data/foodData';
 import { useStore } from '../store/useStore';
+import FoodImage from '../components/FoodImage';
 
 export default function DessertScreen() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function DessertScreen() {
             >
               <ArrowLeft size={20} className="text-text" />
             </button>
-            <h1 className="text-xl font-bold text-text">Dessert</h1>
+            <h1 className="text-xl font-bold text-text">Snacks & Desserts</h1>
           </div>
           <div className="flex items-center gap-2">
             <button className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center">
@@ -43,15 +44,11 @@ export default function DessertScreen() {
             onClick={() => navigate(`/food/${item.id}`)}
           >
             <div className="relative">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-32 object-cover"
-              />
+              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart({ id: item.id, name: item.name, price: item.price, image: item.image });
+                  addToCart({ id: item.id, name: item.name, price: item.price, emoji: item.emoji, gradient: item.gradient });
                 }}
                 className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-md"
               >
@@ -63,7 +60,7 @@ export default function DessertScreen() {
             <div className="p-3">
               <h3 className="text-sm font-semibold text-text leading-tight line-clamp-2">{item.name}</h3>
               <div className="flex items-center justify-between mt-2">
-                <span className="text-primary font-bold text-sm">${item.price.toFixed(2)}</span>
+                <span className="text-primary font-bold text-sm">GH₵{item.price.toFixed(2)}</span>
                 <span className="text-[11px] text-text-secondary flex items-center gap-0.5">
                   <Star size={11} className="text-primary fill-primary" /> {item.rating}
                 </span>

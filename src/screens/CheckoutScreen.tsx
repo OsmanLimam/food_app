@@ -6,15 +6,14 @@ import { useStore } from '../store/useStore';
 export default function CheckoutScreen() {
   const navigate = useNavigate();
   const { getCartTotal, clearCart, setOrderPlaced, cart } = useStore();
-  const [selectedAddress, setSelectedAddress] = useState<'home' | 'office'>('home');
-  const [selectedPayment, setSelectedPayment] = useState<'card' | 'paypal'>('card');
+  const [selectedAddress, setSelectedAddress] = useState<'hostel' | 'lecture'>('hostel');
+  const [selectedPayment, setSelectedPayment] = useState<'momo' | 'card'>('momo');
   const [showSuccess, setShowSuccess] = useState(false);
 
   const subtotal = getCartTotal();
   const deliveryCharge = 0;
   const total = subtotal + deliveryCharge;
 
-  // Redirect to cart if empty
   useEffect(() => {
     if (cart.length === 0 && !showSuccess) {
       navigate('/cart');
@@ -38,16 +37,16 @@ export default function CheckoutScreen() {
           </div>
           <h1 className="text-2xl font-bold text-text text-center">Order Placed Successfully!</h1>
           <p className="text-sm text-text-secondary mt-3 text-center">
-            Your order has been confirmed and will be delivered soon.
+            Your Ghanaian feast is being prepared. Delivery to KNUST campus soon! 🇬🇭
           </p>
           <div className="bg-surface rounded-2xl p-4 w-full mt-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm text-text-secondary">Order Total</span>
-              <span className="text-lg font-bold text-primary">${total.toFixed(2)}</span>
+              <span className="text-lg font-bold text-primary">GH₵{total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-text-secondary">Delivery</span>
-              <span className="text-sm text-text">To {selectedAddress === 'home' ? 'Home' : 'Office'}</span>
+              <span className="text-sm text-text">To {selectedAddress === 'hostel' ? 'Hostel' : 'Lecture Hall'}</span>
             </div>
           </div>
           <button
@@ -88,27 +87,27 @@ export default function CheckoutScreen() {
         <div>
           <h2 className="text-base font-semibold text-text mb-3">Delivery Address</h2>
           <div className="space-y-3">
-            {/* Home */}
+            {/* Hostel */}
             <div
-              onClick={() => setSelectedAddress('home')}
+              onClick={() => setSelectedAddress('hostel')}
               className={`bg-surface rounded-2xl p-4 cursor-pointer transition-all active:bg-elevated ${
-                selectedAddress === 'home' ? 'ring-1 ring-primary' : ''
+                selectedAddress === 'hostel' ? 'ring-1 ring-primary' : ''
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    selectedAddress === 'home' ? 'bg-primary/10' : 'bg-elevated'
+                    selectedAddress === 'hostel' ? 'bg-primary/10' : 'bg-elevated'
                   }`}>
-                    <MapPin size={18} className={selectedAddress === 'home' ? 'text-primary' : 'text-text-muted'} />
+                    <MapPin size={18} className={selectedAddress === 'hostel' ? 'text-primary' : 'text-text-muted'} />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-text">Home</span>
-                      <span className="text-[10px] text-text-muted">+1 234 567 890</span>
+                      <span className="text-sm font-semibold text-text">Hostel</span>
+                      <span className="text-[10px] text-text-muted">+233 24 123 4567</span>
                     </div>
                     <p className="text-xs text-text-secondary mt-1">
-                      123 Main Street, Apt 4B, New York, NY 10001
+                      Africa Hall, Room 204, KNUST Campus, Kumasi
                     </p>
                   </div>
                 </div>
@@ -117,9 +116,9 @@ export default function CheckoutScreen() {
                     <Edit3 size={12} className="text-text-muted" />
                   </button>
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    selectedAddress === 'home' ? 'border-primary' : 'border-text-muted'
+                    selectedAddress === 'hostel' ? 'border-primary' : 'border-text-muted'
                   }`}>
-                    {selectedAddress === 'home' && (
+                    {selectedAddress === 'hostel' && (
                       <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                     )}
                   </div>
@@ -127,27 +126,27 @@ export default function CheckoutScreen() {
               </div>
             </div>
 
-            {/* Office */}
+            {/* Lecture Hall */}
             <div
-              onClick={() => setSelectedAddress('office')}
+              onClick={() => setSelectedAddress('lecture')}
               className={`bg-surface rounded-2xl p-4 cursor-pointer transition-all active:bg-elevated ${
-                selectedAddress === 'office' ? 'ring-1 ring-primary' : ''
+                selectedAddress === 'lecture' ? 'ring-1 ring-primary' : ''
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    selectedAddress === 'office' ? 'bg-primary/10' : 'bg-elevated'
+                    selectedAddress === 'lecture' ? 'bg-primary/10' : 'bg-elevated'
                   }`}>
-                    <MapPin size={18} className={selectedAddress === 'office' ? 'text-primary' : 'text-text-muted'} />
+                    <MapPin size={18} className={selectedAddress === 'lecture' ? 'text-primary' : 'text-text-muted'} />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-text">Office</span>
-                      <span className="text-[10px] text-text-muted">+1 234 567 890</span>
+                      <span className="text-sm font-semibold text-text">Lecture Hall</span>
+                      <span className="text-[10px] text-text-muted">+233 24 123 4567</span>
                     </div>
                     <p className="text-xs text-text-secondary mt-1">
-                      456 Business Ave, Suite 200, New York, NY 10002
+                      Engineering Faculty, LT3, KNUST Campus, Kumasi
                     </p>
                   </div>
                 </div>
@@ -156,9 +155,9 @@ export default function CheckoutScreen() {
                     <Edit3 size={12} className="text-text-muted" />
                   </button>
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    selectedAddress === 'office' ? 'border-primary' : 'border-text-muted'
+                    selectedAddress === 'lecture' ? 'border-primary' : 'border-text-muted'
                   }`}>
-                    {selectedAddress === 'office' && (
+                    {selectedAddress === 'lecture' && (
                       <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                     )}
                   </div>
@@ -173,6 +172,30 @@ export default function CheckoutScreen() {
           <h2 className="text-base font-semibold text-text mb-3">Payment Method</h2>
           <div className="space-y-3">
             <div
+              onClick={() => setSelectedPayment('momo')}
+              className={`bg-surface rounded-2xl p-4 flex items-center gap-3 cursor-pointer transition-all active:bg-elevated ${
+                selectedPayment === 'momo' ? 'ring-1 ring-primary' : ''
+              }`}
+            >
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                selectedPayment === 'momo' ? 'bg-primary/10' : 'bg-elevated'
+              }`}>
+                <span className="text-xl">📱</span>
+              </div>
+              <div className="flex-1">
+                <span className="text-sm font-medium text-text">Mobile Money (MoMo)</span>
+                <p className="text-[11px] text-text-muted mt-0.5">MTN, Vodafone, AirtelTigo</p>
+              </div>
+              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                selectedPayment === 'momo' ? 'border-primary' : 'border-text-muted'
+              }`}>
+                {selectedPayment === 'momo' && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+                )}
+              </div>
+            </div>
+
+            <div
               onClick={() => setSelectedPayment('card')}
               className={`bg-surface rounded-2xl p-4 flex items-center gap-3 cursor-pointer transition-all active:bg-elevated ${
                 selectedPayment === 'card' ? 'ring-1 ring-primary' : ''
@@ -183,34 +206,14 @@ export default function CheckoutScreen() {
               }`}>
                 <CreditCard size={18} className={selectedPayment === 'card' ? 'text-primary' : 'text-text-muted'} />
               </div>
-              <span className="text-sm font-medium text-text flex-1">Credit Card</span>
+              <div className="flex-1">
+                <span className="text-sm font-medium text-text">Credit/Debit Card</span>
+                <p className="text-[11px] text-text-muted mt-0.5">Visa, Mastercard</p>
+              </div>
               <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                 selectedPayment === 'card' ? 'border-primary' : 'border-text-muted'
               }`}>
                 {selectedPayment === 'card' && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                )}
-              </div>
-            </div>
-
-            <div
-              onClick={() => setSelectedPayment('paypal')}
-              className={`bg-surface rounded-2xl p-4 flex items-center gap-3 cursor-pointer transition-all active:bg-elevated ${
-                selectedPayment === 'paypal' ? 'ring-1 ring-primary' : ''
-              }`}
-            >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                selectedPayment === 'paypal' ? 'bg-primary/10' : 'bg-elevated'
-              }`}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className={selectedPayment === 'paypal' ? 'text-primary' : 'text-text-muted'}>
-                  <path d="M7 21l2-8H5l7-10h2l-2 8h4L9 21H7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <span className="text-sm font-medium text-text flex-1">PayPal</span>
-              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                selectedPayment === 'paypal' ? 'border-primary' : 'border-text-muted'
-              }`}>
-                {selectedPayment === 'paypal' && (
                   <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                 )}
               </div>
@@ -224,15 +227,15 @@ export default function CheckoutScreen() {
           <div className="bg-surface rounded-2xl p-4 space-y-3">
             <div className="flex justify-between">
               <span className="text-sm text-text-secondary">Delivery Charge</span>
-              <span className="text-sm text-text font-medium">${deliveryCharge.toFixed(2)}</span>
+              <span className="text-sm text-text font-medium">GH₵{deliveryCharge.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-text-secondary">Subtotal</span>
-              <span className="text-sm text-text font-medium">${subtotal.toFixed(2)}</span>
+              <span className="text-sm text-text font-medium">GH₵{subtotal.toFixed(2)}</span>
             </div>
             <div className="border-t border-divider pt-3 flex justify-between">
               <span className="text-sm font-semibold text-text">Total</span>
-              <span className="text-lg font-bold text-primary">${total.toFixed(2)}</span>
+              <span className="text-lg font-bold text-primary">GH₵{total.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -244,7 +247,7 @@ export default function CheckoutScreen() {
           onClick={handlePlaceOrder}
           className="w-full py-4 bg-primary rounded-2xl text-base font-semibold text-white shadow-lg shadow-primary/30 active:scale-[0.98] transition-transform"
         >
-          Place Order — ${total.toFixed(2)}
+          Place Order — GH₵{total.toFixed(2)}
         </button>
       </div>
     </div>

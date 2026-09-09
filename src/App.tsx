@@ -8,6 +8,9 @@ import JuiceScreen from './screens/JuiceScreen';
 import DessertScreen from './screens/DessertScreen';
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default function App() {
   return (
@@ -22,6 +25,9 @@ export default function App() {
           <Route path="/dessert" element={<DessertScreen />} />
           <Route path="/cart" element={<CartScreen />} />
           <Route path="/checkout" element={<CheckoutScreen />} />
+          <Route path="/favorites" element={<FavoritesScreen />} />
+          <Route path="/notifications" element={<NotificationsScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
         </Routes>
       </div>
     </BrowserRouter>
