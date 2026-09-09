@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import ItemDetailScreen from './screens/ItemDetailScreen';
@@ -15,7 +15,7 @@ import LoginScreen from './screens/LoginScreen';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="max-w-md mx-auto min-h-screen bg-bg relative">
         <Routes>
           <Route path="/" element={<HomeScreen />} />
@@ -32,6 +32,6 @@ export default function App() {
           <Route path="/profile" element={<ProfileScreen />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
