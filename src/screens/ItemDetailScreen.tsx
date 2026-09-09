@@ -3,6 +3,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Heart, Minus, Plus, Star } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { allFoodItems } from '../data/foodData';
+import FoodImage from '../components/FoodImage';
+
+const ingredientEmojis: Record<string, string> = {
+  'Rice': '🍚', 'Tomato': '🍅', 'Chicken': '🍗', 'Pepper': '🌶️', 'Onion': '🧅',
+  'Beans': '🫘', 'Shito': '🥫', 'Spaghetti': '🍝', 'Egg': '🥚',
+  'Corn': '🌽', 'Cassava': '🥔', 'Tilapia': '🐟',
+  'Plantain': '🍌', 'Goat Meat': '🥩', 'Herbs': '🌿',
+  'Ginger': '🫚', 'Pineapple': '🍍', 'Cloves': '🌸',
+  'Hibiscus': '🌺', 'Millet': '🌾', 'Dates': '🌴', 'Milk': '🥛',
+  'Banana': '🍌', 'Sugar': '🍬', 'Water': '💧', 'Ice': '🧊',
+  'Sorghum': '🌾', 'Yeast': '🍞', 'Groundnuts': '🥜', 'Salt': '🧂',
+  'Flour': '🌾', 'Oil': '🫗', 'Nutmeg': '🥥',
+  'Palm Oil': '🌴', 'Gari': '🥣', 'Cocoyam': '🥔',
+  'Kontomire': '🥬', 'Fish': '🐟', 'Yam': '🍠',
+};
 
 export default function ItemDetailScreen() {
   const navigate = useNavigate();
@@ -23,7 +38,7 @@ export default function ItemDetailScreen() {
 
   const handleAddToCart = () => {
     addToCart(
-      { id: food.id, name: food.name, price: food.price, image: food.image },
+      { id: food.id, name: food.name, price: food.price, emoji: food.emoji, gradient: food.gradient },
       quantity
     );
     setAdded(true);
@@ -53,11 +68,7 @@ export default function ItemDetailScreen() {
 
       {/* Hero Image */}
       <div className="relative">
-        <img
-          src={food.image}
-          alt={food.name}
-          className="w-full h-72 object-cover"
-        />
+        <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} size="lg" />
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-bg to-transparent" />
       </div>
 
@@ -76,7 +87,7 @@ export default function ItemDetailScreen() {
               <span className="text-sm text-text-secondary">{food.deliveryTime}</span>
             </div>
           </div>
-          <span className="text-2xl font-bold text-primary">${food.price.toFixed(2)}</span>
+          <span className="text-2xl font-bold text-primary">GH₵{food.price.toFixed(2)}</span>
         </div>
 
         {/* Quantity Selector */}
@@ -115,7 +126,7 @@ export default function ItemDetailScreen() {
               {food.ingredients.map((ingredient, idx) => (
                 <div key={idx} className="flex flex-col items-center gap-1.5 flex-shrink-0">
                   <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center text-lg">
-                    {idx === 0 ? '🥬' : idx === 1 ? '🦐' : idx === 2 ? '🌿' : idx === 3 ? '🍚' : '🧄'}
+                    {ingredientEmojis[ingredient] || '🍽️'}
                   </div>
                   <span className="text-[11px] text-text-secondary text-center w-16 truncate">
                     {ingredient}
@@ -137,7 +148,7 @@ export default function ItemDetailScreen() {
               : 'bg-primary text-white shadow-lg shadow-primary/30'
           }`}
         >
-          {added ? '✓ Added to Cart' : `Add to Cart — $${(food.price * quantity).toFixed(2)}`}
+          {added ? '✓ Added to Cart' : `Add to Cart — GH₵${(food.price * quantity).toFixed(2)}`}
         </button>
       </div>
     </div>

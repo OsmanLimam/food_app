@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, SlidersHorizontal, Star, Clock } from 'lucide-react';
 import { juiceItems } from '../data/foodData';
 import { useStore } from '../store/useStore';
+import FoodImage from '../components/FoodImage';
 
 export default function JuiceScreen() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function JuiceScreen() {
             >
               <ArrowLeft size={20} className="text-text" />
             </button>
-            <h1 className="text-xl font-bold text-text">Juice Items</h1>
+            <h1 className="text-xl font-bold text-text">Local Drinks</h1>
           </div>
           <div className="flex items-center gap-2">
             <button className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center">
@@ -43,15 +44,11 @@ export default function JuiceScreen() {
             onClick={() => navigate(`/food/${item.id}`)}
           >
             <div className="relative">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 rounded-2xl object-cover"
-              />
+              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart({ id: item.id, name: item.name, price: item.price, image: item.image });
+                  addToCart({ id: item.id, name: item.name, price: item.price, emoji: item.emoji, gradient: item.gradient });
                 }}
                 className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-md"
               >
@@ -72,7 +69,7 @@ export default function JuiceScreen() {
               </div>
             </div>
             <span className="bg-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl">
-              ${item.price.toFixed(2)}
+              GH₵{item.price.toFixed(2)}
             </span>
           </div>
         ))}

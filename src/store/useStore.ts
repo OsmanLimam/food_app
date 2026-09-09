@@ -4,7 +4,8 @@ export interface CartItem {
   id: string;
   name: string;
   price: number;
-  image: string;
+  emoji: string;
+  gradient: string;
   quantity: number;
   subtitle?: string;
 }
@@ -27,6 +28,10 @@ interface AppState {
   // Order
   orderPlaced: boolean;
   setOrderPlaced: (val: boolean) => void;
+
+  // Menu drawer
+  menuOpen: boolean;
+  setMenuOpen: (val: boolean) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -76,4 +81,7 @@ export const useStore = create<AppState>((set, get) => ({
 
   orderPlaced: false,
   setOrderPlaced: (val) => set({ orderPlaced: val }),
+
+  menuOpen: false,
+  setMenuOpen: (val) => set({ menuOpen: val }),
 }));

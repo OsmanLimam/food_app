@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Heart } from 'lucide-react';
+import { Search, Heart, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { popularFoods } from '../data/foodData';
+import { popularFoods, restaurantList } from '../data/foodData';
+import FoodImage from '../components/FoodImage';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
-  const { toggleFavorite, isFavorite, getCartCount } = useStore();
+  const { toggleFavorite, isFavorite, getCartCount, setMenuOpen } = useStore();
   const cartCount = getCartCount();
 
   return (
@@ -15,7 +16,10 @@ export default function HomeScreen() {
       <div className="sticky top-0 z-30 bg-bg/95 backdrop-blur-sm px-5 pt-4 pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center">
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center active:bg-elevated transition-colors"
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 12h18M3 6h18M3 18h18"/>
               </svg>
@@ -27,27 +31,33 @@ export default function HomeScreen() {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
                   <circle cx="12" cy="10" r="3"/>
                 </svg>
-                New York, NY
+                KNUST Campus, Kumasi
               </h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/search')}
-              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center"
+              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center active:bg-elevated transition-colors"
             >
               <Search size={18} className="text-text-secondary" />
             </button>
-            <button className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center relative">
+            <button
+              onClick={() => navigate('/notifications')}
+              className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center relative active:bg-elevated transition-colors"
+            >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" strokeWidth="2">
                 <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                 <path d="M13.73 21a2 2 0 01-3.46 0"/>
               </svg>
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary" />
             </button>
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+            <button
+              onClick={() => navigate('/profile')}
+              className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center active:bg-primary/30 transition-colors"
+            >
               <span className="text-sm font-bold text-primary">S</span>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -56,11 +66,11 @@ export default function HomeScreen() {
       <div className="px-5 pt-3">
         <div className="bg-gradient-to-r from-primary to-primary-alt rounded-2xl p-4 flex items-center justify-between">
           <div>
-            <p className="text-white/80 text-[11px] font-medium">Limited Offer</p>
-            <h3 className="text-white font-bold text-sm mt-0.5">30% OFF</h3>
-            <p className="text-white/70 text-[11px] mt-0.5">On your first order</p>
+            <p className="text-white/80 text-[11px] font-medium">Campus Special 🇬🇭</p>
+            <h3 className="text-white font-bold text-sm mt-0.5">20% OFF</h3>
+            <p className="text-white/70 text-[11px] mt-0.5">On Jollof Rice orders</p>
           </div>
-          <div className="text-3xl">🎉</div>
+          <div className="text-3xl">🍛</div>
         </div>
       </div>
 
@@ -70,18 +80,18 @@ export default function HomeScreen() {
           className="relative bg-surface rounded-2xl overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
           onClick={() => navigate('/restaurant')}
         >
-          <img
-            src="https://image.qwenlm.ai/generated-images/97d7d9cb-55b8-4248-b4ab-f6168a654e19/_result.png"
-            alt="Featured"
-            className="w-full h-36 object-cover"
-          />
+          <div className="w-full h-36 bg-gradient-to-br from-orange-800 to-red-900 flex items-center justify-center relative">
+            <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/5" />
+            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
+            <span className="text-6xl drop-shadow-lg">🏪</span>
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-bg/90 via-bg/30 to-transparent" />
           <div className="absolute bottom-3 left-4 right-4">
             <div className="flex items-center gap-2 mb-1">
               <span className="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-md">Featured</span>
               <span className="text-[11px] text-white/80 flex items-center gap-0.5">★ 4.9</span>
             </div>
-            <h3 className="text-base font-bold text-white">Burger King</h3>
+            <h3 className="text-base font-bold text-white">KNUST Chop Bar</h3>
             <p className="text-xs text-white/70 mt-0.5">20-25 Min • Free Delivery</p>
           </div>
         </div>
@@ -94,29 +104,29 @@ export default function HomeScreen() {
             onClick={() => navigate('/restaurant')}
             className="flex-shrink-0 bg-surface rounded-2xl px-4 py-3 flex items-center gap-2 active:bg-elevated transition-colors"
           >
-            <span className="text-lg">🍔</span>
+            <span className="text-lg">🍲</span>
             <span className="text-xs font-medium text-text">Restaurants</span>
           </button>
           <button
             onClick={() => navigate('/juice')}
             className="flex-shrink-0 bg-surface rounded-2xl px-4 py-3 flex items-center gap-2 active:bg-elevated transition-colors"
           >
-            <span className="text-lg">🧃</span>
-            <span className="text-xs font-medium text-text">Juice</span>
+            <span className="text-lg">🥤</span>
+            <span className="text-xs font-medium text-text">Drinks</span>
           </button>
           <button
             onClick={() => navigate('/dessert')}
             className="flex-shrink-0 bg-surface rounded-2xl px-4 py-3 flex items-center gap-2 active:bg-elevated transition-colors"
           >
-            <span className="text-lg">🍰</span>
-            <span className="text-xs font-medium text-text">Dessert</span>
+            <span className="text-lg">🍩</span>
+            <span className="text-xs font-medium text-text">Snacks</span>
           </button>
           <button
             onClick={() => navigate('/search')}
             className="flex-shrink-0 bg-surface rounded-2xl px-4 py-3 flex items-center gap-2 active:bg-elevated transition-colors"
           >
-            <span className="text-lg">🍜</span>
-            <span className="text-xs font-medium text-text">Asian Food</span>
+            <span className="text-lg">🥘</span>
+            <span className="text-xs font-medium text-text">Local Dishes</span>
           </button>
         </div>
       </div>
@@ -124,23 +134,22 @@ export default function HomeScreen() {
       {/* Popular Restaurants */}
       <div className="px-5 pt-5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-text">Popular Restaurants</h2>
+          <h2 className="text-base font-semibold text-text">Popular Spots</h2>
           <button onClick={() => navigate('/restaurant')} className="text-xs text-primary font-medium">
             See All
           </button>
         </div>
         <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
-          {[
-            { name: 'Burger King', time: '20-25 Min', img: 'https://image.qwenlm.ai/generated-images/97d7d9cb-55b8-4248-b4ab-f6168a654e19/_result.png' },
-            { name: 'Taco Fiesta', time: '15-20 Min', img: 'https://image.qwenlm.ai/generated-images/3653af8a-92e2-4312-a128-014bca8b1276/_result.png' },
-            { name: 'Noodle House', time: '25-30 Min', img: 'https://image.qwenlm.ai/generated-images/1d2c8897-10ed-4eb7-a4dd-564829e7b71b/_result.png' },
-          ].map((r) => (
+          {restaurantList.map((r) => (
             <div
               key={r.name}
               className="flex-shrink-0 w-32 cursor-pointer active:scale-[0.97] transition-transform"
               onClick={() => navigate('/restaurant')}
             >
-              <img src={r.img} alt={r.name} className="w-32 h-24 rounded-2xl object-cover" />
+              <div className={`w-32 h-24 rounded-2xl bg-gradient-to-br ${r.gradient} flex items-center justify-center relative overflow-hidden`}>
+                <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/5" />
+                <span className="text-4xl drop-shadow-lg">{r.emoji}</span>
+              </div>
               <h3 className="text-xs font-semibold text-text mt-2 truncate">{r.name}</h3>
               <p className="text-[10px] text-text-secondary">{r.time}</p>
             </div>
@@ -150,7 +159,7 @@ export default function HomeScreen() {
 
       {/* Section Title */}
       <div className="px-5 pt-5 pb-2 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-text">Popular Near You</h2>
+        <h2 className="text-base font-semibold text-text">Popular Ghanaian Dishes</h2>
         <button onClick={() => navigate('/search')} className="text-xs text-primary font-medium">
           See All
         </button>
@@ -167,11 +176,7 @@ export default function HomeScreen() {
               onClick={() => navigate(`/food/${food.id}`)}
             >
               <div className="relative">
-                <img
-                  src={food.image}
-                  alt={food.name}
-                  className="w-full h-36 object-cover"
-                />
+                <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} />
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -190,8 +195,8 @@ export default function HomeScreen() {
                   {food.name}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-primary font-bold text-sm">${food.price.toFixed(2)}</span>
-                  <div className="flex items-center gap-2">
+                  <span className="text-primary font-bold text-sm">GH₵{food.price.toFixed(2)}</span>
+                  <div className="flex items-center gap-1.5">
                     <span className="text-[11px] text-text-secondary flex items-center gap-0.5">
                       ★ {food.rating}
                     </span>
@@ -234,19 +239,19 @@ export default function HomeScreen() {
               </svg>
               <span className="text-[10px] font-medium text-primary">Home</span>
             </button>
-            <button className="flex flex-col items-center gap-1">
+            <button className="flex flex-col items-center gap-1" onClick={() => navigate('/favorites')}>
               <Heart size={22} className="text-text-muted" />
               <span className="text-[10px] font-medium text-text-muted">Favorites</span>
             </button>
             <div className="w-14" />
-            <button className="flex flex-col items-center gap-1">
+            <button className="flex flex-col items-center gap-1" onClick={() => navigate('/notifications')}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="2">
                 <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                 <path d="M13.73 21a2 2 0 01-3.46 0"/>
               </svg>
               <span className="text-[10px] font-medium text-text-muted">Notifications</span>
             </button>
-            <button className="flex flex-col items-center gap-1">
+            <button className="flex flex-col items-center gap-1" onClick={() => navigate('/profile')}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
@@ -256,6 +261,70 @@ export default function HomeScreen() {
           </div>
         </div>
       </div>
+
+      {/* Menu Drawer */}
+      <MenuDrawer />
     </div>
+  );
+}
+
+function MenuDrawer() {
+  const navigate = useNavigate();
+  const { menuOpen, setMenuOpen } = useStore();
+
+  if (!menuOpen) return null;
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 bg-black/60 z-50 animate-fade-in"
+        onClick={() => setMenuOpen(false)}
+      />
+      <div className="fixed top-0 left-0 bottom-0 w-72 bg-surface z-50 animate-slide-right p-5 overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <p className="text-primary font-bold text-lg">SaviDon's Kitchen</p>
+            <p className="text-xs text-text-secondary">KNUST Campus, Kumasi</p>
+          </div>
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="w-9 h-9 rounded-xl bg-elevated flex items-center justify-center"
+          >
+            <X size={18} className="text-text" />
+          </button>
+        </div>
+
+        <div className="space-y-1">
+          {[
+            { icon: '🏠', label: 'Home', action: () => { navigate('/'); setMenuOpen(false); } },
+            { icon: '🔍', label: 'Search Food', action: () => { navigate('/search'); setMenuOpen(false); } },
+            { icon: '🍲', label: 'Restaurants', action: () => { navigate('/restaurant'); setMenuOpen(false); } },
+            { icon: '🥤', label: 'Local Drinks', action: () => { navigate('/juice'); setMenuOpen(false); } },
+            { icon: '🍩', label: 'Snacks & Desserts', action: () => { navigate('/dessert'); setMenuOpen(false); } },
+            { icon: '❤️', label: 'My Favorites', action: () => { navigate('/favorites'); setMenuOpen(false); } },
+            { icon: '🛒', label: 'My Cart', action: () => { navigate('/cart'); setMenuOpen(false); } },
+            { icon: '🔔', label: 'Notifications', action: () => { navigate('/notifications'); setMenuOpen(false); } },
+            { icon: '👤', label: 'My Profile', action: () => { navigate('/profile'); setMenuOpen(false); } },
+          ].map((item) => (
+            <button
+              key={item.label}
+              onClick={item.action}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left text-text hover:bg-elevated active:bg-elevated transition-colors"
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-sm font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-divider">
+          <div className="bg-elevated rounded-xl p-4">
+            <p className="text-xs text-text-secondary">Logged in as</p>
+            <p className="text-sm font-semibold text-text mt-1">SaviDon</p>
+            <p className="text-xs text-text-muted mt-0.5">savidon@knust.edu.gh</p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
