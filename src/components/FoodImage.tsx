@@ -1,0 +1,30 @@
+import React from 'react';
+
+interface FoodCardProps {
+  emoji: string;
+  gradient: string;
+  name: string;
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export default function FoodImage({ emoji, gradient, name, className = '', size = 'md' }: FoodCardProps) {
+  const sizeClasses = {
+    sm: 'w-16 h-16 text-2xl',
+    md: 'w-full h-36 text-5xl',
+    lg: 'w-full h-52 text-7xl',
+  };
+
+  return (
+    <div
+      className={`relative bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden ${sizeClasses[size]} ${className}`}
+      aria-label={name}
+    >
+      {/* Decorative circles */}
+      <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/5" />
+      <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-white/5" />
+      <span className="relative drop-shadow-lg">{emoji}</span>
+    </div>
+  );
+}
