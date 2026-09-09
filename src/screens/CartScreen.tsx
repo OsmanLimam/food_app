@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Minus, Plus, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import FoodImage from '../components/FoodImage';
 
@@ -69,7 +69,7 @@ export default function CartScreen() {
             className="animate-fade-in bg-surface rounded-2xl p-3 flex items-center gap-3"
             style={{ animationDelay: `${index * 50}ms` }}
           >
-            <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
+            <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} image={item.image} size="sm" />
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-text truncate">{item.name}</h3>
               <p className="text-xs text-text-secondary mt-0.5">
@@ -106,12 +106,35 @@ export default function CartScreen() {
             <p className="text-xl font-bold text-text mt-0.5">GH₵{total.toFixed(2)}</p>
           </div>
         </div>
-        <button
-          onClick={() => navigate('/checkout')}
-          className="w-full py-4 bg-primary rounded-2xl text-base font-semibold text-white shadow-lg shadow-primary/30 active:scale-[0.98] transition-transform"
-        >
-          Checkout
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              const phoneNumber = '233551537532';
+              const { cart } = useStore.getState();
+              const { user, isLoggedIn } = useStore.getState();
+              let message = `🍛 *New Order from SaviDon's Kitchen*\n\n`;
+              if (isLoggedIn && user) {
+                message += `*Customer:* ${user.name}\n*Phone:* ${user.phone}\n*Email:* ${user.email}\n\n`;
+              }
+              message += `*Order Items:*\n`;
+              cart.forEach((item) => {
+                message += `• ${item.name} x${item.quantity} — GH₵${(item.price * item.quantity).toFixed(2)}\n`;
+              });
+              message += `\n*Total: GH₵${total.toFixed(2)}*\n\n_Delivered to KNUST Campus_`;
+              window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+            className="flex-1 py-4 bg-green-500 rounded-2xl text-base font-semibold text-white flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 active:scale-[0.98] transition-transform"
+          >
+            <MessageCircle size={20} className="fill-white" />
+            WhatsApp
+          </button>
+          <button
+            onClick={() => navigate('/checkout')}
+            className="flex-1 py-4 bg-primary rounded-2xl text-base font-semibold text-white shadow-lg shadow-primary/30 active:scale-[0.98] transition-transform"
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </div>
   );

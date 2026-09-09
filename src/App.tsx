@@ -11,6 +11,7 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import LoginScreen from './screens/LoginScreen';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <div className="max-w-md mx-auto min-h-screen bg-bg relative">
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
           <Route path="/search" element={<SearchScreen />} />
           <Route path="/food/:id" element={<ItemDetailScreen />} />
           <Route path="/restaurant" element={<RestaurantScreen />} />

@@ -5,12 +5,25 @@ export interface CartItem {
   name: string;
   price: number;
   emoji: string;
+  image?: string;
   gradient: string;
   quantity: number;
   subtitle?: string;
 }
 
+export interface User {
+  name: string;
+  email: string;
+  phone: string;
+}
+
 interface AppState {
+  // Auth
+  user: User | null;
+  isLoggedIn: boolean;
+  login: (user: User) => void;
+  logout: () => void;
+
   // Cart
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
@@ -35,6 +48,12 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set, get) => ({
+  // Auth
+  user: null,
+  isLoggedIn: false,
+  login: (user) => set({ user, isLoggedIn: true }),
+  logout: () => set({ user: null, isLoggedIn: false }),
+
   cart: [],
   addToCart: (item, quantity = 1) => {
     set((state) => {

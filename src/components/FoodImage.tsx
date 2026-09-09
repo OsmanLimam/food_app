@@ -1,19 +1,34 @@
 import React from 'react';
 
-interface FoodCardProps {
+interface FoodImageProps {
   emoji: string;
   gradient: string;
   name: string;
+  image?: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg';
 }
 
-export default function FoodImage({ emoji, gradient, name, className = '', size = 'md' }: FoodCardProps) {
+export default function FoodImage({ emoji, gradient, name, image, className = '', size = 'md' }: FoodImageProps) {
   const sizeClasses = {
     sm: 'w-16 h-16 text-2xl',
     md: 'w-full h-36 text-5xl',
     lg: 'w-full h-52 text-7xl',
   };
+
+  if (image) {
+    return (
+      <div className={`relative overflow-hidden ${sizeClasses[size]} ${className}`}>
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div

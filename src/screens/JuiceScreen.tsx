@@ -44,11 +44,11 @@ export default function JuiceScreen() {
             onClick={() => navigate(`/food/${item.id}`)}
           >
             <div className="relative">
-              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} size="sm" />
+              <FoodImage emoji={item.emoji} gradient={item.gradient} name={item.name} image={item.image} size="sm" />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart({ id: item.id, name: item.name, price: item.price, emoji: item.emoji, gradient: item.gradient });
+                  addToCart({ id: item.id, name: item.name, price: item.price, emoji: item.emoji, image: item.image, gradient: item.gradient });
                 }}
                 className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-md"
               >

@@ -38,7 +38,7 @@ export default function ItemDetailScreen() {
 
   const handleAddToCart = () => {
     addToCart(
-      { id: food.id, name: food.name, price: food.price, emoji: food.emoji, gradient: food.gradient },
+      { id: food.id, name: food.name, price: food.price, emoji: food.emoji, image: food.image, gradient: food.gradient },
       quantity
     );
     setAdded(true);
@@ -68,7 +68,7 @@ export default function ItemDetailScreen() {
 
       {/* Hero Image */}
       <div className="relative">
-        <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} size="lg" />
+        <FoodImage emoji={food.emoji} gradient={food.gradient} name={food.name} image={food.image} size="lg" />
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-bg to-transparent" />
       </div>
 
